@@ -66,6 +66,9 @@
       <version.jboss-logmanager>1.4.1.Final</version.jboss-logmanager>
       <version.slf4j>1.6.1</version.slf4j>
       <version.xmlparser>1.0.0.Final</version.xmlparser>
+      <version.jgit>2.3.1.201302201838-r</version.jgit> 
+      <maven.min.version>3.0.3</maven.min.version>
+      <jdk.min.version>1.6</jdk.min.version>
    </properties>
 
    <profiles>
@@ -448,10 +451,47 @@
                <preparationGoals>clean install</preparationGoals>
             </configuration>
          </plugin>
+<plugin>
+<groupId>org.apache.maven.plugins</groupId>
+<artifactId>maven-enforcer-plugin</artifactId>
+<executions>
+<execution>
+<id>enforce-java-version</id>
+<goals>
+<goal>enforce</goal>
+</goals>
+<configuration>
+<rules>
+<requireJavaVersion>
+<message>
+To build this project JDK ${jdk.min.version} (or greater) is required. Please install it.
+</message>
+<version>${jdk.min.version}</version>
+</requireJavaVersion>
+</rules>
+</configuration>
+</execution>
+<execution>
+<id>enforce-maven-version</id>
+<goals>
+<goal>enforce</goal>
+</goals>
+<configuration>
+<rules>
+<requireMavenVersion>
+<message>
+To build this project Maven ${maven.min.version} (or greater) is required. Please install it.
+</message>
+<version>${maven.min.version}</version>
+</requireMavenVersion>
+</rules>
+</configuration>
+</execution>
+</executions>
+</plugin>
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <inherited>true</inherited>
             <configuration>
                <source>${maven.compiler.source}</source>
                <target>${maven.compiler.target}</target>

@@ -19,7 +19,7 @@ import org.jboss.forge.addon.text.highlight.scanner.java.BuiltInTypes;
 public class JavaScanner implements Scanner
 {
 
-   public static final Pattern SPACE = Pattern.compile("\\s+|\\n");
+   public static final Pattern SPACE = Pattern.compile("\\s+|(\\r\\n?|\\n)");
    public static final Pattern COMMENT = Pattern.compile(
             "// [^\\n\\\\]* (?: \\\\. [^\\n\\\\]* )* | /\\* (?: .*? \\*/ | .* )", Pattern.DOTALL | Pattern.COMMENTS);
    public static final Pattern IDENT = Pattern.compile("[a-zA-Z_][A-Za-z_0-9]*");

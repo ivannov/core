@@ -57,12 +57,12 @@ public class SQLScanner implements Scanner
             .add(PREDEFINED_FUNCTIONS, TokenType.predefined)
             .add(DIRECTIVES, TokenType.directive);
 
-   private static Pattern ESCAPE = Pattern.compile(" [rbfntv\\n\\\\\\/'\"] | x[a-fA-F0-9]{1,2} | [0-7]{1,3} | . ", Pattern.DOTALL|Pattern.COMMENTS);
+   private static Pattern ESCAPE = Pattern.compile(" [rbfntv(\\r\\n?|\\n)\\\\\\/'\"] | x[a-fA-F0-9]{1,2} | [0-7]{1,3} | . ", Pattern.DOTALL|Pattern.COMMENTS);
    private static Pattern UNICODE_ESCAPE = Pattern.compile(" u[a-fA-F0-9]{4} | U[a-fA-F0-9]{8} ", Pattern.COMMENTS);
    private static Pattern STRING_PREFIXES = Pattern.compile("[xnb]|_\\w+", Pattern.CASE_INSENSITIVE);
 
-   private static Pattern SPACE = Pattern.compile(" \\s+ | \\\\\\n ", Pattern.COMMENTS);
-   private static Pattern COMMENT = Pattern.compile("(?:--\\s?|\\#).*", Pattern.COMMENTS);
+   private static Pattern SPACE = Pattern.compile(" \\s+ | \\\\(\\r\\n?|\\n) ", Pattern.COMMENTS);
+   private static Pattern COMMENT = Pattern.compile("(?:--\\s*|\\#).*", Pattern.COMMENTS);
    private static Pattern COMMENT_DIRECTIVE = Pattern.compile(" /\\* (!)? (?: .*? \\*/ | .* ) ", Pattern.DOTALL|Pattern.COMMENTS);
    private static Pattern OPERATOR = Pattern.compile(" [*\\/=<>:;,!&^|()\\[\\]{}~%] | [-+\\.](?!\\d) ", Pattern.COMMENTS);
    private static Pattern LETTER = Pattern.compile("[A-Za-z_]");

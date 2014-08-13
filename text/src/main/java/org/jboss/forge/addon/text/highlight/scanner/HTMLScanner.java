@@ -56,7 +56,7 @@ public class HTMLScanner implements Scanner
    public static final Pattern JAVASCRIPT_INLINE = Pattern.compile("javascript:[ \\t]*");
    public static final Pattern AMP = Pattern.compile("&");
    public static final Pattern END = Pattern.compile("[\\n>]");
-   public static final Pattern SPECIAL_SPACE = Pattern.compile("[ \\t]*\\n");
+   public static final Pattern SPECIAL_SPACE = Pattern.compile("[ \\t]*(\\r\\n?|\\n)");
    public static final Pattern SPECIAL_COMMENT = Pattern.compile("(\\s*<!--)(?:(.*?)(-->)|(.*))", Pattern.DOTALL);
 
    public static final Map<String, Pattern> PLAIN_STRING_CONTENT = new HashMap<String, Pattern>();

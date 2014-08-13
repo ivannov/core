@@ -36,7 +36,7 @@ public class GroovyScanner implements Scanner
 
    private static final Pattern ESCAPE = Pattern.compile(" [bfnrtv$\\n\\\\'\"] | x[a-fA-F0-9]{1,2} | [0-7]{1,3} ", Pattern.COMMENTS);
    private static final Pattern UNICODE_ESCAPE = Pattern.compile(" u[a-fA-F0-9]{4} ", Pattern.COMMENTS);
-   private static final Pattern REGEXP_ESCAPE = Pattern.compile(" [bfnrtv\\n\\\\'\"] | x[a-fA-F0-9]{1,2} | [0-7]{1,3} | \\d | [bBdDsSwW\\/] ", Pattern.COMMENTS);
+   private static final Pattern REGEXP_ESCAPE = Pattern.compile(" [bfnrtv\\\\'\"] | x[a-fA-F0-9]{1,2} | [0-7]{1,3} | \\d | [bBdDsSwW\\/] ", Pattern.COMMENTS);
 
    private static final Map<String, Pattern> STRING_CONTENT_PATTERN = new HashMap<String, Pattern>();
    {
@@ -47,16 +47,16 @@ public class GroovyScanner implements Scanner
       STRING_CONTENT_PATTERN.put("/", Pattern.compile("[^\\\\$\\/\\n]+"));
    }
 
-   private static final Pattern SPACE = Pattern.compile(" \\s+ | \\\\\\n ", Pattern.COMMENTS);
-   private static final Pattern COMMENT = Pattern.compile("   // [^\\n\\\\]* (?: \\\\. [^\\n\\\\]* )* | /\\* (?: .*? \\*/ | .* ) ", Pattern.DOTALL|Pattern.COMMENTS);
+   private static final Pattern SPACE = Pattern.compile(" \\s+ | \\\\(\\r\\n?|\\n) ", Pattern.COMMENTS);
+   private static final Pattern COMMENT = Pattern.compile("   // [^\\r\\n\\\\]* (?: \\\\. [^\\r\\n\\\\]* )* | /\\* (?: .*? \\*/ | .* ) ", Pattern.DOTALL|Pattern.COMMENTS);
    private static final Pattern DOCTYPE = Pattern.compile("\\#!.*", Pattern.COMMENTS);
    private static final Pattern INCLUDE = Pattern.compile(" (?!as) " + JavaScanner.IDENT.pattern() + " (?: \\. " + JavaScanner.IDENT.pattern() + " )* (?: \\.\\* )? ", Pattern.COMMENTS);
    private static final Pattern IDENT = Pattern.compile(" " + JavaScanner.IDENT.pattern() + " | \\[\\] ", Pattern.COMMENTS);
    private static final Pattern AFTER_DEF = Pattern.compile("\\s*[({]");
    private static final Pattern SEMI_COLON = Pattern.compile(";");
    private static final Pattern START_BRACKET = Pattern.compile("\\{");
-   private static final Pattern OPERATOR = Pattern.compile(" \\.\\.<? | \\*?\\.(?!\\d)@? | \\.& | \\?:? | [,?:(\\[] | -[->] | \\+\\+ |\n" + 
-         "              && | \\|\\| | \\*\\*=? | ==?~ | <=?>? | [-+*%^~&|>=!]=? | <<<?=? | >>>?=? ", Pattern.COMMENTS);
+    private static final Pattern OPERATOR = Pattern.compile(" \\.\\.<? | \\*?\\.(?!\\d)@? | \\.& | \\?:? | [,?:(\\[] | -[->] | \\+\\+ |\n" +
+            "              && | \\|\\| | \\*\\*=? | ==?~ | <=?>? | [-+*%^~&|>=!]=? | <<<?=? | >>>?=? ", Pattern.COMMENTS);
    private static final Pattern END_BRACKET = Pattern.compile(" [)\\]}] ", Pattern.COMMENTS);
    private static final Pattern NUMBER = Pattern.compile("[\\d.]");
    private static final Pattern HEX = Pattern.compile("0[xX][0-9A-Fa-f]+");
@@ -76,7 +76,7 @@ public class GroovyScanner implements Scanner
    private static final Pattern INLINE_DELIMITER = Pattern.compile(" \\$ \\{ ", Pattern.COMMENTS);
    private static final Pattern CONTENT_2 = Pattern.compile(" \\$ ", Pattern.DOTALL|Pattern.COMMENTS);
    private static final Pattern CONTENT_3 = Pattern.compile("\\\\. ", Pattern.DOTALL|Pattern.COMMENTS);
-   private static final Pattern END_NEWLINE = Pattern.compile(" \\\\ | \\n ", Pattern.COMMENTS);
+   private static final Pattern END_NEWLINE = Pattern.compile(" \\\\ | \\n", Pattern.COMMENTS);
 
    public enum State
    {

@@ -17,7 +17,7 @@ import org.jboss.forge.addon.text.highlight.TokenType;
 public class YAMLScanner implements Scanner
 {
    private static final Pattern SPACE = Pattern.compile(" +[\\t ]*");
-   private static final Pattern SPACE_NEWLINE = Pattern.compile("\\n+");
+   private static final Pattern SPACE_NEWLINE = Pattern.compile("(\\r\\n?|\\n)+");
    private static final Pattern COMMENT = Pattern.compile("#.*");
    private static final Pattern HEAD = Pattern.compile("---|\\.\\.\\.");
    private static final Pattern DOCTYPE = Pattern.compile("%.*");
@@ -147,7 +147,7 @@ public class YAMLScanner implements Scanner
          encoder.beginGroup(TokenType.string);
          encoder.textToken(m.group(), TokenType.delimiter);
          string_indent = context.key_indent != null ? context.key_indent:source.column(source.index() - m.group().length())-1;
-         if ( (m = source.scan(Pattern.compile("(?:\\n+ {" + (string_indent +1) + "}.*)+"))) != null)
+         if ( (m = source.scan(Pattern.compile("(?:(\\r\\n?|\\n)+ {" + (string_indent +1) + "}.*)+"))) != null)
          {
             encoder.textToken(m.group(), TokenType.content);
          }
@@ -159,7 +159,7 @@ public class YAMLScanner implements Scanner
          encoder.beginGroup(TokenType.string);
          encoder.textToken(m.group(), TokenType.content);
          string_indent = context.key_indent != null ? context.key_indent:source.column(source.index() - m.group().length())-1;
-         if ( (m = source.scan(Pattern.compile("(?:\\n+ {" + (string_indent +1) + "}.*)+"))) != null)
+         if ( (m = source.scan(Pattern.compile("(?:(\\r\\n?|\\n)+ {" + (string_indent +1) + "}.*)+"))) != null)
          {
             encoder.textToken(m.group(), TokenType.content);
          }

@@ -71,9 +71,9 @@ public class JavaScriptScanner implements Scanner
                         | Pattern.DOTALL));
    }
 
-   private static final Pattern SPACE = Pattern.compile(" \\s+ | \\\\\\n ", Pattern.COMMENTS);
+   private static final Pattern SPACE = Pattern.compile(" \\s+ | \\\\(\\r\\n?|\\n) ", Pattern.COMMENTS);
    private static final Pattern COMMENT = Pattern
-            .compile(" // [^\\n\\\\]* (?: \\\\. [^\\n\\\\]* )* | /\\* (?: .*? \\*/ | .*() ) ", Pattern.COMMENTS
+            .compile(" // [^\\r\\n\\\\]* (?: \\\\. [^\\r\\n\\\\]* )* | /\\* (?: .*? \\*/ | .*() ) ", Pattern.COMMENTS
                      | Pattern.DOTALL);
    private static final Pattern COMMENT_MULTILINE = Pattern.compile(" .*? \\*", Pattern.COMMENTS | Pattern.DOTALL);
    private static final Pattern COMMENT_MULTILINE_CONTENT = Pattern.compile(" .+ ", Pattern.COMMENTS | Pattern.DOTALL);

@@ -22,6 +22,7 @@ import java.util.concurrent.ExecutionException;
 import org.jboss.forge.furnace.Furnace;
 import org.jboss.forge.furnace.addons.AddonId;
 import org.jboss.forge.furnace.impl.addons.AddonRepositoryImpl;
+import org.jboss.forge.furnace.manager.AddonManager;
 import org.jboss.forge.furnace.manager.impl.AddonManagerImpl;
 import org.jboss.forge.furnace.manager.maven.addon.MavenAddonDependencyResolver;
 import org.jboss.forge.furnace.manager.request.AddonActionRequest;
@@ -31,7 +32,6 @@ import org.jboss.forge.furnace.repositories.AddonRepository;
 import org.jboss.forge.furnace.repositories.AddonRepositoryMode;
 import org.jboss.forge.furnace.repositories.MutableAddonRepository;
 import org.jboss.forge.furnace.util.OperatingSystemUtils;
-import org.jboss.forge.furnace.versions.SingleVersion;
 import org.jboss.forge.furnace.versions.Version;
 import org.jboss.forge.furnace.versions.Versions;
 
@@ -45,7 +45,6 @@ import org.jboss.forge.furnace.versions.Versions;
  */
 public class Bootstrap
 {
-   private static final String FORGE_ADDON_GROUP_ID = "org.jboss.forge.addon:";
    private final Furnace furnace;
    private boolean exitAfter = false;
    private boolean batchMode = false;
@@ -302,59 +301,7 @@ public class Bootstrap
          AddonDependencyResolver resolver = new MavenAddonDependencyResolver();
          AddonManagerImpl addonManager = new AddonManagerImpl(furnace, resolver);
 
-         AddonId addon;
-         // This allows forge --install maven
-         if (addonCoordinates.contains(","))
-         {
-            if (addonCoordinates.contains(":"))
-            {
-               addon = AddonId.fromCoordinates(addonCoordinates);
-            }
-            else
-            {
-               addon = AddonId.fromCoordinates(FORGE_ADDON_GROUP_ID + addonCoordinates);
-            }
-         }
-         else
-         {
-            AddonId[] versions;
-            String coordinate;
-            if (addonCoordinates.contains(":"))
-            {
-               coordinate = addonCoordinates;
-               versions = resolver.resolveVersions(addonCoordinates).get();
-            }
-            else
-            {
-               coordinate = FORGE_ADDON_GROUP_ID + addonCoordinates;
-               versions = resolver.resolveVersions(coordinate).get();
-            }
-
-            if (versions.length == 0)
-            {
-               throw new IllegalArgumentException("No Artifact version found for " + coordinate);
-            }
-            else
-            {
-               AddonId selected = null;
-               for (int i = versions.length - 1; selected == null && i >= 0; i--)
-               {
-                  String apiVersion = resolver.resolveAPIVersion(versions[i]).get();
-                  if (apiVersion != null
-                           && Versions.isApiCompatible(runtimeAPIVersion, new SingleVersion(apiVersion)))
-                  {
-                     selected = versions[i];
-                  }
-               }
-               if (selected == null)
-               {
-                  throw new IllegalArgumentException("No compatible addon API version found for " + coordinate
-                           + " for API " + runtimeAPIVersion);
-               }
-
-               addon = selected;
-            }
-         }
+         AddonId addon = addonManager.getAddonId(addonCoordinates, runtimeAPIVersion);
 
          AddonActionRequest request = addonManager.install(addon);
          System.out.println(request);
@@ -399,7 +346,7 @@ public class Bootstrap
             }
             else
             {
-               addon = AddonId.fromCoordinates(FORGE_ADDON_GROUP_ID + addonCoordinates);
+               addon = AddonId.fromCoordinates(AddonManager.FORGE_ADDON_GROUP_ID + addonCoordinates);
             }
             coordinates = addon.getName();
          }
@@ -411,7 +358,7 @@ public class Bootstrap
             }
             else
             {
-               coordinates = FORGE_ADDON_GROUP_ID + addonCoordinates;
+               coordinates = AddonManager.FORGE_ADDON_GROUP_ID + addonCoordinates;
             }
          }
          REPOS: for (AddonRepository repository : furnace.getRepositories())

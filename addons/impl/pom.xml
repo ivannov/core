@@ -62,5 +62,16 @@
          <classifier>forge-addon</classifier>
          <scope>provided</scope>
       </dependency>
+
+       <dependency>
+           <groupId>org.jboss.forge.furnace</groupId>
+           <artifactId>furnace</artifactId>
+       </dependency>
+       <dependency>
+           <groupId>org.jboss.forge.furnace</groupId>
+           <artifactId>furnace-manager</artifactId>
+       </dependency>
+
    </dependencies>
+
 </project>

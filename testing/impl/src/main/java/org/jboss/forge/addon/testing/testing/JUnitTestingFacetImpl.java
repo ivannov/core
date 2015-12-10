@@ -1,15 +1,16 @@
 package org.jboss.forge.addon.testing.testing;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.inject.Inject;
+
 import org.jboss.forge.addon.dependencies.Coordinate;
 import org.jboss.forge.addon.dependencies.DependencyResolver;
 import org.jboss.forge.addon.dependencies.builder.CoordinateBuilder;
 import org.jboss.forge.addon.dependencies.builder.DependencyBuilder;
 import org.jboss.forge.addon.dependencies.builder.DependencyQueryBuilder;
-
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * @author Ivan St. Ivanov
@@ -38,7 +39,8 @@ public class JUnitTestingFacetImpl extends AbstractTestingFacetImpl
       final List<Coordinate> availableCoordinates = resolver.resolveVersions(
                DependencyQueryBuilder.create(buildJUnitCoordinate()));
       List<String> availableVersions = new ArrayList<>(availableCoordinates.size());
-      for (Coordinate coordinate : availableCoordinates) {
+      for (Coordinate coordinate : availableCoordinates)
+      {
          availableVersions.add(coordinate.getVersion());
       }
       return availableVersions;

@@ -1,5 +1,11 @@
 package org.jboss.forge.addon.testing.ui;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+import javax.inject.Inject;
+
 import org.jboss.forge.addon.projects.ProjectFactory;
 import org.jboss.forge.addon.projects.ui.AbstractProjectCommand;
 import org.jboss.forge.addon.testing.TestingFacet;
@@ -15,17 +21,11 @@ import org.jboss.forge.addon.ui.result.Results;
 import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.addon.ui.util.Metadata;
 
-import javax.inject.Inject;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
 /**
  * @author Ivan St. Ivanov
  */
 public class TestSetupCommandImpl extends AbstractProjectCommand implements TestSetupCommand
 {
-
    @Inject
    @WithAttributes(shortName = 'f', label = "Test Framework", type = InputType.DROPDOWN)
    private UISelectOne<TestingFacet> testFramework;
@@ -35,12 +35,14 @@ public class TestSetupCommandImpl extends AbstractProjectCommand implements Test
    private UISelectOne<String> version;
 
    @Override
-   public UICommandMetadata getMetadata(UIContext context) {
+   public UICommandMetadata getMetadata(UIContext context)
+   {
       return Metadata.from(super.getMetadata(context), getClass())
                .category(Categories.create("Testing"))
                .name("Testing: Setup")
                .description("This addon will help you setup a unit test framework for your project");
    }
+
    @Override
    public void initializeUI(final UIBuilder uiBuilder) throws Exception
    {
@@ -59,10 +61,12 @@ public class TestSetupCommandImpl extends AbstractProjectCommand implements Test
 
    private String buildFrameworkName(UIBuilder uiBuilder, TestingFacet source)
    {
-      if(source == null) {
+      if (source == null)
+      {
          return null;
       }
-      if (uiBuilder.getUIContext().getProvider().isGUI()) {
+      if (uiBuilder.getUIContext().getProvider().isGUI())
+      {
          return source.getFrameworkName();
       }
       return source.getFrameworkName().toLowerCase();
@@ -76,7 +80,8 @@ public class TestSetupCommandImpl extends AbstractProjectCommand implements Test
 
    private Iterable<String> getAvailableVersions()
    {
-      if (version.isEnabled()) {
+      if (version.isEnabled())
+      {
          return testFramework.getValue().getAvailableVersions();
       }
       return Collections.emptyList();
@@ -103,6 +108,12 @@ public class TestSetupCommandImpl extends AbstractProjectCommand implements Test
    protected boolean isProjectRequired()
    {
       return true;
+   }
+
+   @Override
+   public boolean isEnabled(UIContext context)
+   {
+      return super.isEnabled(context);
    }
 
    @Inject

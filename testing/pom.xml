@@ -29,6 +29,12 @@
             <artifactId>testing-impl</artifactId>
             <version>${project.version}</version>
          </dependency>
+         <dependency>
+            <groupId>org.jboss.forge.addon</groupId>
+            <artifactId>testing</artifactId>
+            <version>${project.version}</version>
+            <classifier>forge-addon</classifier>
+         </dependency>
       </dependencies>
    </dependencyManagement>
    <build>

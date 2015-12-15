@@ -2,13 +2,14 @@ package org.jboss.forge.addon.testing.testing;
 
 import org.jboss.forge.addon.dependencies.DependencyResolver;
 import org.jboss.forge.addon.dependencies.builder.DependencyBuilder;
+import org.jboss.forge.addon.testing.TestNGTestingFacet;
 
 import javax.inject.Inject;
 
 /**
  * @author Ivan St. Ivanov
  */
-public class TestNGTestFramework extends AbstractTestingFacetImpl
+public class TestNGTestFramework extends AbstractTestingFacetImpl implements TestNGTestingFacet
 {
    @Override
    public String getFrameworkName()

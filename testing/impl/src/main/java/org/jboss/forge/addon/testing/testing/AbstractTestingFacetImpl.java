@@ -26,7 +26,7 @@ public abstract class AbstractTestingFacetImpl extends AbstractProjectFacet impl
       getMatchingDependencies(dependencyFacet.getDependencies())
                .forEach(dependencyFacet::removeDependency);
       getFrameworkDependencies().forEach(dependencyFacet::addDirectDependency);
-      return false;
+      return true;
    }
 
    private DependencyFacet getDependencyFacet()

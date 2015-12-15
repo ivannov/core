@@ -2,13 +2,14 @@ package org.jboss.forge.addon.testing.testing;
 
 import org.jboss.forge.addon.dependencies.DependencyResolver;
 import org.jboss.forge.addon.dependencies.builder.DependencyBuilder;
+import org.jboss.forge.addon.testing.JUnitTestingFacet;
 
 import javax.inject.Inject;
 
 /**
  * @author Ivan St. Ivanov
  */
-public class JUnitTestingFacetImpl extends AbstractTestingFacetImpl
+public class JUnitTestingFacetImpl extends AbstractTestingFacetImpl implements JUnitTestingFacet
 {
    @Override
    public String getFrameworkName()

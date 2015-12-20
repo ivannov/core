@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 /**
  * @author Ivan St. Ivanov
  */
-public abstract class AbstractTestingFacetImpl extends AbstractProjectFacet implements TestingFacet
+public abstract class AbstractTestingFacet extends AbstractProjectFacet implements TestingFacet
 {
    @Override
    public boolean install()

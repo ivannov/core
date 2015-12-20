@@ -7,14 +7,15 @@ import org.jboss.forge.addon.facets.FacetFactory;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.ProjectFactory;
 import org.jboss.forge.addon.projects.facets.DependencyFacet;
+import org.jboss.forge.addon.testing.facet.JUnitTestingFacet;
 import org.jboss.forge.arquillian.AddonDependencies;
 import org.jboss.forge.arquillian.archive.AddonArchive;
+import org.jboss.forge.furnace.container.simple.Service;
+import org.jboss.forge.furnace.container.simple.lifecycle.SimpleContainer;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import javax.inject.Inject;
 
 import static org.junit.Assert.assertTrue;
 
@@ -28,20 +29,22 @@ public class TestingFacetTest
    @AddonDependencies
    public static AddonArchive getDeployment()
    {
-      return ShrinkWrap.create(AddonArchive.class).addBeansXML();
+      final AddonArchive addonArchive = ShrinkWrap.create(AddonArchive.class)
+               .addAsServiceProvider(Service.class, TestingFacetTest.class);
+      System.out.println(addonArchive.toString(true));
+      return addonArchive;
    }
-
-   @Inject
-   private ProjectFactory projectFactory;
 
    private Project project;
 
-   @Inject
    private FacetFactory facetFactory;
 
    @Before
    public void setUp()
    {
+      ProjectFactory projectFactory = SimpleContainer.getServices(getClass().getClassLoader(), ProjectFactory.class)
+               .get();
+      facetFactory = SimpleContainer.getServices(getClass().getClassLoader(), FacetFactory.class).get();
       project = projectFactory.createTempProject();
    }
 

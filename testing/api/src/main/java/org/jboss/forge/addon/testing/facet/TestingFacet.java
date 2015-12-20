@@ -1,4 +1,4 @@
-package org.jboss.forge.addon.testing;
+package org.jboss.forge.addon.testing.facet;
 
 import org.jboss.forge.addon.dependencies.Dependency;
 import org.jboss.forge.addon.projects.ProjectFacet;

@@ -1,4 +1,4 @@
-package org.jboss.forge.addon.testing.testing;
+package org.jboss.forge.addon.testing.facet;
 
 import org.jboss.forge.addon.dependencies.Coordinate;
 import org.jboss.forge.addon.dependencies.Dependency;
@@ -7,7 +7,7 @@ import org.jboss.forge.addon.dependencies.builder.DependencyBuilder;
 import org.jboss.forge.addon.dependencies.builder.DependencyQueryBuilder;
 import org.jboss.forge.addon.projects.facets.AbstractProjectFacet;
 import org.jboss.forge.addon.projects.facets.DependencyFacet;
-import org.jboss.forge.addon.testing.TestingFacet;
+import org.jboss.forge.furnace.container.simple.lifecycle.SimpleContainer;
 
 import java.util.Collections;
 import java.util.List;
@@ -73,7 +73,13 @@ public abstract class AbstractTestingFacetImpl extends AbstractProjectFacet impl
                .collect(Collectors.toList());
    }
 
-   protected abstract DependencyResolver getDependencyResolver();
+   private DependencyResolver resolver;
+
+   private DependencyResolver getDependencyResolver() {
+      if (resolver == null)
+         resolver = SimpleContainer.getServices(getClass().getClassLoader(), DependencyResolver.class).get();
+      return resolver;
+   }
 
    protected abstract DependencyBuilder buildFrameworkDependency();
 }

@@ -7,15 +7,20 @@
 
 package org.jboss.forge.addon.testing;
 
-import javax.inject.Inject;
-
+import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.forge.addon.projects.Project;
 import org.jboss.forge.addon.projects.ProjectFactory;
 import org.jboss.forge.addon.testing.ui.TestSetupCommand;
 import org.jboss.forge.addon.ui.controller.CommandController;
 import org.jboss.forge.addon.ui.test.UITestHarness;
+import org.jboss.forge.arquillian.AddonDependencies;
+import org.jboss.forge.arquillian.archive.AddonArchive;
+import org.jboss.forge.furnace.container.simple.Service;
+import org.jboss.forge.furnace.container.simple.lifecycle.SimpleContainer;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -26,11 +31,25 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class TestSetupCommandTest
 {
-   @Inject
+
+   @Deployment
+   @AddonDependencies
+   public static AddonArchive getDeployment()
+   {
+      return ShrinkWrap.create(AddonArchive.class).addAsServiceProvider(Service.class, TestSetupCommandTest.class);
+   }
+
    private UITestHarness testHarness;
 
-   @Inject
    private ProjectFactory projectFactory;
+
+   @Before
+   public void setUp() throws Exception
+   {
+      projectFactory = SimpleContainer.getServices(getClass().getClassLoader(), ProjectFactory.class)
+               .get();
+      testHarness = SimpleContainer.getServices(getClass().getClassLoader(), UITestHarness.class).get();
+   }
 
    @Test
    public void test() throws Exception

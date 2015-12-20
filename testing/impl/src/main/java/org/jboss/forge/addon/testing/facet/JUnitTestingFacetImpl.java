@@ -1,10 +1,6 @@
-package org.jboss.forge.addon.testing.testing;
+package org.jboss.forge.addon.testing.facet;
 
-import org.jboss.forge.addon.dependencies.DependencyResolver;
 import org.jboss.forge.addon.dependencies.builder.DependencyBuilder;
-import org.jboss.forge.addon.testing.JUnitTestingFacet;
-
-import javax.inject.Inject;
 
 /**
  * @author Ivan St. Ivanov
@@ -15,15 +11,6 @@ public class JUnitTestingFacetImpl extends AbstractTestingFacetImpl implements J
    public String getFrameworkName()
    {
       return "JUnit";
-   }
-
-   @Inject
-   private DependencyResolver resolver;
-
-   @Override
-   protected DependencyResolver getDependencyResolver()
-   {
-      return resolver;
    }
 
    @Override

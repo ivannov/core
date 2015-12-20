@@ -1,37 +1,30 @@
 package org.jboss.forge.addon.testing.ui;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
-import javax.inject.Inject;
-
 import org.jboss.forge.addon.projects.ProjectFactory;
 import org.jboss.forge.addon.projects.ui.AbstractProjectCommand;
-import org.jboss.forge.addon.testing.TestingFacet;
+import org.jboss.forge.addon.testing.facet.TestingFacet;
 import org.jboss.forge.addon.ui.context.UIBuilder;
 import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIExecutionContext;
-import org.jboss.forge.addon.ui.hints.InputType;
+import org.jboss.forge.addon.ui.input.InputComponentFactory;
 import org.jboss.forge.addon.ui.input.UISelectOne;
 import org.jboss.forge.addon.ui.metadata.UICommandMetadata;
-import org.jboss.forge.addon.ui.metadata.WithAttributes;
 import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.addon.ui.result.Results;
 import org.jboss.forge.addon.ui.util.Categories;
 import org.jboss.forge.addon.ui.util.Metadata;
+import org.jboss.forge.furnace.container.simple.lifecycle.SimpleContainer;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Ivan St. Ivanov
  */
 public class TestSetupCommandImpl extends AbstractProjectCommand implements TestSetupCommand
 {
-   @Inject
-   @WithAttributes(shortName = 'f', label = "Test Framework", type = InputType.DROPDOWN)
    private UISelectOne<TestingFacet> testFramework;
-
-   @Inject
-   @WithAttributes(shortName = 'v', label = "Test Framework Version", type = InputType.DROPDOWN)
    private UISelectOne<String> version;
 
    @Override
@@ -46,6 +39,10 @@ public class TestSetupCommandImpl extends AbstractProjectCommand implements Test
    @Override
    public void initializeUI(final UIBuilder uiBuilder) throws Exception
    {
+      InputComponentFactory factory = uiBuilder.getInputComponentFactory();
+      testFramework = factory.createSelectOne("testFramework", TestingFacet.class).setLabel("Test Framework");
+      version = factory.createSelectOne("version", String.class).setLabel("Test Framework Version");
+
       uiBuilder.add(testFramework)
                .add(version);
 
@@ -117,12 +114,14 @@ public class TestSetupCommandImpl extends AbstractProjectCommand implements Test
       return super.isEnabled(context);
    }
 
-   @Inject
    private ProjectFactory projectFactory;
 
    @Override
    protected ProjectFactory getProjectFactory()
    {
+      if (projectFactory == null) {
+         projectFactory = SimpleContainer.getServices(getClass().getClassLoader(), ProjectFactory.class).get();
+      }
       return projectFactory;
    }
 

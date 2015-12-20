@@ -1,4 +1,4 @@
-package org.jboss.forge.addon.testing;
+package org.jboss.forge.addon.testing.facet;
 
 /**
  * @author Ivan St. Ivanov

@@ -1,0 +1,3 @@
+org.jboss.forge.addon.testing.facet.JUnitTestingFacetImpl
+org.jboss.forge.addon.testing.facet.TestNGTestingFacetImpl
+org.jboss.forge.addon.testing.ui.TestSetupCommandImpl

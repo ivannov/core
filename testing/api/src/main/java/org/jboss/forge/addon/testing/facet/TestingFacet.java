@@ -15,4 +15,6 @@ public interface TestingFacet extends ProjectFacet
    List<Dependency> getFrameworkDependencies();
 
    List<String> getAvailableVersions();
+
+   void setFrameworkVersion(String version);
 }

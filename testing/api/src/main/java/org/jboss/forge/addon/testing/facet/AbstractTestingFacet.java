@@ -8,6 +8,7 @@ import org.jboss.forge.addon.dependencies.builder.DependencyQueryBuilder;
 import org.jboss.forge.addon.projects.facets.AbstractProjectFacet;
 import org.jboss.forge.addon.projects.facets.DependencyFacet;
 import org.jboss.forge.furnace.container.simple.lifecycle.SimpleContainer;
+import org.jboss.forge.furnace.util.Assert;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,13 +20,23 @@ import java.util.stream.Stream;
  */
 public abstract class AbstractTestingFacet extends AbstractProjectFacet implements TestingFacet
 {
+
+   private String frameworkVersion;
+
+   @Override
+   public void setFrameworkVersion(String version)
+   {
+      this.frameworkVersion = version;
+   }
+
    @Override
    public boolean install()
    {
+      Assert.notNull(frameworkVersion, "You should pick testing framework version before installing this facet");
       final DependencyFacet dependencyFacet = getDependencyFacet();
       getMatchingDependencies(dependencyFacet.getDependencies())
                .forEach(dependencyFacet::removeDependency);
-      getFrameworkDependencies().forEach(dependencyFacet::addDirectDependency);
+      dependencyFacet.addDirectDependency(buildFrameworkDependency().setVersion(frameworkVersion));
       return true;
    }
 

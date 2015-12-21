@@ -14,9 +14,11 @@ import org.jboss.forge.furnace.container.simple.Service;
 import org.jboss.forge.furnace.container.simple.lifecycle.SimpleContainer;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -25,19 +27,19 @@ import static org.junit.Assert.assertTrue;
 @RunWith(Arquillian.class)
 public class TestingFacetTest
 {
+
+   private Project project;
+   private FacetFactory facetFactory;
+   private JUnitTestingFacet jUnitTestingFacet;
+   private DependencyFacet dependencyFacet;
+
    @Deployment
    @AddonDependencies
    public static AddonArchive getDeployment()
    {
-      final AddonArchive addonArchive = ShrinkWrap.create(AddonArchive.class)
+      return ShrinkWrap.create(AddonArchive.class)
                .addAsServiceProvider(Service.class, TestingFacetTest.class);
-      System.out.println(addonArchive.toString(true));
-      return addonArchive;
    }
-
-   private Project project;
-
-   private FacetFactory facetFactory;
 
    @Before
    public void setUp()
@@ -46,16 +48,26 @@ public class TestingFacetTest
                .get();
       facetFactory = SimpleContainer.getServices(getClass().getClassLoader(), FacetFactory.class).get();
       project = projectFactory.createTempProject();
+      jUnitTestingFacet = SimpleContainer.getServices(getClass().getClassLoader(), JUnitTestingFacet.class).get();
+      dependencyFacet = project.getFacet(DependencyFacet.class);
    }
 
    @Test
    public void testInstallJUnitFacetOnEmptyProject() throws Exception
    {
-      facetFactory.install(project, JUnitTestingFacet.class);
-      DependencyFacet dependencyFacet = project.getFacet(DependencyFacet.class);
-      assertTrue(dependencyFacet.hasDirectDependency(DependencyBuilder.create()
+      final String frameworkVersion = "4.12";
+      jUnitTestingFacet.setFrameworkVersion(frameworkVersion);
+      facetFactory.install(project, jUnitTestingFacet);
+      final DependencyBuilder junitDependency = getJUnitDependency();
+      assertTrue(dependencyFacet.hasDirectDependency(junitDependency));
+      assertEquals(frameworkVersion, dependencyFacet.getDirectDependency(junitDependency).getCoordinate().getVersion());
+   }
+
+   private DependencyBuilder getJUnitDependency()
+   {
+      return DependencyBuilder.create()
                .setGroupId("junit")
                .setArtifactId("junit")
-               .setScopeType("test")));
+               .setScopeType("test");
    }
 }

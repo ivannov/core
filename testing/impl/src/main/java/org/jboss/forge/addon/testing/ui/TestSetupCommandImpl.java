@@ -98,8 +98,14 @@ public class TestSetupCommandImpl extends AbstractProjectCommand implements Test
    @Override
    public Result execute(UIExecutionContext uiExecutionContext) throws Exception
    {
+      final TestingFacet chosenFacet = testFramework.getValue();
+      final String chosenVersion = version.getValue();
 
-      return Results.success("Framework: " + testFramework.getValue().getFrameworkName() + ", Version: " + version.getValue());
+      chosenFacet.setFrameworkVersion(chosenVersion);
+      chosenFacet.install();
+      
+      return Results.success(chosenFacet.getFrameworkName() + "testing framework, version: " +
+              chosenVersion + " was installed.");
    }
 
    @Override

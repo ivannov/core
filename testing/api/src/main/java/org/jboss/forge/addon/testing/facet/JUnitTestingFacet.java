@@ -7,18 +7,24 @@ import org.jboss.forge.addon.dependencies.builder.DependencyBuilder;
  */
 public class JUnitTestingFacet extends AbstractTestingFacet implements TestingFacet
 {
+
+   public static final String JUNIT_FRAMEWORK_NAME = "JUnit";
+   public static final String JUNIT_GROUP_ID = "junit";
+   public static final String JUNIT_ARTIFACT_ID = "junit";
+   public static final String JUNIT_SCOPE = "test";
+
    @Override
    public String getFrameworkName()
    {
-      return "JUnit";
+      return JUNIT_FRAMEWORK_NAME;
    }
 
    @Override
    protected DependencyBuilder buildFrameworkDependency()
    {
       return DependencyBuilder.create()
-               .setGroupId("junit")
-               .setArtifactId("junit")
-               .setScopeType("test");
+               .setGroupId(JUNIT_GROUP_ID)
+               .setArtifactId(JUNIT_ARTIFACT_ID)
+               .setScopeType(JUNIT_SCOPE);
    }
 }

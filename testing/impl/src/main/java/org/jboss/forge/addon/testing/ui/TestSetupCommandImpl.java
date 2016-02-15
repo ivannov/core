@@ -1,5 +1,6 @@
 package org.jboss.forge.addon.testing.ui;
 
+import org.jboss.forge.addon.facets.FacetFactory;
 import org.jboss.forge.addon.projects.ProjectFactory;
 import org.jboss.forge.addon.projects.ui.AbstractProjectCommand;
 import org.jboss.forge.addon.testing.facet.TestingFacet;
@@ -102,9 +103,11 @@ public class TestSetupCommandImpl extends AbstractProjectCommand implements Test
       final String chosenVersion = version.getValue();
 
       chosenFacet.setFrameworkVersion(chosenVersion);
-      chosenFacet.install();
+
+      FacetFactory facetFactory = SimpleContainer.getServices(getClass().getClassLoader(), FacetFactory.class).get();
+      facetFactory.install(getSelectedProject(uiExecutionContext), chosenFacet);
       
-      return Results.success(chosenFacet.getFrameworkName() + "testing framework, version: " +
+      return Results.success(chosenFacet.getFrameworkName() + " testing framework, version: " +
               chosenVersion + " was installed.");
    }
 
@@ -125,10 +128,10 @@ public class TestSetupCommandImpl extends AbstractProjectCommand implements Test
    @Override
    protected ProjectFactory getProjectFactory()
    {
-      if (projectFactory == null) {
+      if (projectFactory == null)
+      {
          projectFactory = SimpleContainer.getServices(getClass().getClassLoader(), ProjectFactory.class).get();
       }
       return projectFactory;
    }
-
 }

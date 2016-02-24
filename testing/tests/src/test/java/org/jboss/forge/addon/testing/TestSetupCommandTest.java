@@ -104,7 +104,8 @@ public class TestSetupCommandTest
          assertFalse(result instanceof Failed);
          assertTrue(project.hasFacet(TestNGTestingFacet.class));
          DependencyFacet dependencyFacet = project.getFacet(DependencyFacet.class);
-         assertTrue(dependencyFacet.hasDirectDependency(DependencyBuilder.create(TEST_NG_GROUP_ID + ":" + TEST_NG_ARTIFACT_ID + ":" + version + ":" + TEST_NG_SCOPE)));
+         assertTrue(dependencyFacet.hasDirectDependency(DependencyBuilder
+                  .create(TEST_NG_GROUP_ID + ":" + TEST_NG_ARTIFACT_ID + ":" + version + ":" + TEST_NG_SCOPE)));
       }
    }
 
@@ -113,7 +114,8 @@ public class TestSetupCommandTest
    {
       shellTest.getShell().setCurrentResource(project.getRoot());
       final String version = "4.1.12";
-      Result result = shellTest.execute("testing-setup --test-framework junit --version " + version, 2, TimeUnit.SECONDS);
+      Result result = shellTest
+               .execute("testing-setup --test-framework junit --version " + version, 2, TimeUnit.SECONDS);
       assertFalse(result instanceof Failed);
       assertTrue(project.hasFacet(JUnitTestingFacet.class));
       DependencyFacet dependencyFacet = project.getFacet(DependencyFacet.class);

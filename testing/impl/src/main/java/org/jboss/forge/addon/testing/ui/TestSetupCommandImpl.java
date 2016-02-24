@@ -106,9 +106,9 @@ public class TestSetupCommandImpl extends AbstractProjectCommand implements Test
 
       FacetFactory facetFactory = SimpleContainer.getServices(getClass().getClassLoader(), FacetFactory.class).get();
       facetFactory.install(getSelectedProject(uiExecutionContext), chosenFacet);
-      
+
       return Results.success(chosenFacet.getFrameworkName() + " testing framework, version: " +
-              chosenVersion + " was installed.");
+               chosenVersion + " was installed.");
    }
 
    @Override

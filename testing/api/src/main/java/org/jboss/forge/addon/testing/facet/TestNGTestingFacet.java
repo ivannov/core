@@ -3,6 +3,8 @@ package org.jboss.forge.addon.testing.facet;
 import org.jboss.forge.addon.dependencies.builder.DependencyBuilder;
 
 /**
+ * Describes the TestNG testing framework.
+ *
  * @author Ivan St. Ivanov
  */
 public class TestNGTestingFacet extends AbstractTestingFacet implements TestingFacet
@@ -23,8 +25,8 @@ public class TestNGTestingFacet extends AbstractTestingFacet implements TestingF
    protected DependencyBuilder buildFrameworkDependency()
    {
       return DependencyBuilder.create()
-                  .setGroupId(TEST_NG_GROUP_ID)
-                  .setArtifactId(TEST_NG_ARTIFACT_ID)
-                  .setScopeType(TEST_NG_SCOPE);
+               .setGroupId(TEST_NG_GROUP_ID)
+               .setArtifactId(TEST_NG_ARTIFACT_ID)
+               .setScopeType(TEST_NG_SCOPE);
    }
 }

@@ -3,6 +3,8 @@ package org.jboss.forge.addon.testing.facet;
 import org.jboss.forge.addon.dependencies.builder.DependencyBuilder;
 
 /**
+ * Describes the JUnit testing framework.
+ *
  * @author Ivan St. Ivanov
  */
 public class JUnitTestingFacet extends AbstractTestingFacet implements TestingFacet

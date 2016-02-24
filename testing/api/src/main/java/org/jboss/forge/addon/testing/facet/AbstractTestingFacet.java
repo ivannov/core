@@ -16,6 +16,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
+ * Provides operations that are common for all the testing frameworks supported by this addon.
+ *
  * @author Ivan St. Ivanov
  */
 public abstract class AbstractTestingFacet extends AbstractProjectFacet implements TestingFacet
@@ -45,14 +47,16 @@ public abstract class AbstractTestingFacet extends AbstractProjectFacet implemen
       return getFaceted().getFacet(DependencyFacet.class);
    }
 
-   private Stream<Dependency> getMatchingDependencies(List<Dependency> existingDependencies) {
+   private Stream<Dependency> getMatchingDependencies(List<Dependency> existingDependencies)
+   {
       final List<Dependency> frameworkCoordinates = getFrameworkDependencies();
       return existingDependencies.stream()
                .filter(existingDependency ->
                         frameworkCoordinates.stream()
-                           .anyMatch(
-                                 frameworkDependency -> areCoordinatesMatching(
-                                    frameworkDependency.getCoordinate(), existingDependency.getCoordinate())));
+                                 .anyMatch(
+                                          frameworkDependency -> areCoordinatesMatching(
+                                                   frameworkDependency.getCoordinate(),
+                                                   existingDependency.getCoordinate())));
    }
 
    private boolean areCoordinatesMatching(Coordinate coordinate1, Coordinate coordinate2)
@@ -86,7 +90,8 @@ public abstract class AbstractTestingFacet extends AbstractProjectFacet implemen
 
    private DependencyResolver resolver;
 
-   private DependencyResolver getDependencyResolver() {
+   private DependencyResolver getDependencyResolver()
+   {
       if (resolver == null)
          resolver = SimpleContainer.getServices(getClass().getClassLoader(), DependencyResolver.class).get();
       return resolver;
